@@ -1,1 +1,1 @@
-# Advent of Code 2022 (Rust)
+# Advent of Code 2023 (Rust)
