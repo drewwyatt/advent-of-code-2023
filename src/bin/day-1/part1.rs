@@ -3,7 +3,7 @@ use regex::Regex;
 use std::str::FromStr;
 
 #[derive(Debug, Clone, Copy)]
-pub enum AdventError {
+pub enum Part1Error {
   InvalidRegex,
   NoFirstDigit,
 }
@@ -13,7 +13,7 @@ pub struct CalibrationDocument {
 }
 
 impl FromStr for CalibrationDocument {
-  type Err = AdventError;
+  type Err = Part1Error;
 
   fn from_str(s: &str) -> Result<Self, Self::Err> {
     let readings = s
@@ -36,7 +36,7 @@ pub struct Reading {
 }
 
 impl FromStr for Reading {
-  type Err = AdventError;
+  type Err = Part1Error;
 
   fn from_str(s: &str) -> Result<Self, Self::Err> {
     lazy_static! {
@@ -44,13 +44,13 @@ impl FromStr for Reading {
       static ref LAST_RE: Regex = Regex::new(r"(\d)[a-z]*$").unwrap();
     }
 
-    let first_captures = FIRST_RE.captures(s).ok_or(AdventError::InvalidRegex)?;
-    let last_captures = LAST_RE.captures(s).ok_or(AdventError::InvalidRegex)?;
+    let first_captures = FIRST_RE.captures(s).ok_or(Part1Error::InvalidRegex)?;
+    let last_captures = LAST_RE.captures(s).ok_or(Part1Error::InvalidRegex)?;
 
     let first_digit =
-      parse_from_captures_or::<i32, AdventError>(&first_captures, 1, AdventError::NoFirstDigit)?;
+      parse_from_captures_or::<i32, Part1Error>(&first_captures, 1, Part1Error::NoFirstDigit)?;
     let last_digit =
-      parse_from_captures_or::<i32, AdventError>(&last_captures, 1, AdventError::NoFirstDigit)?;
+      parse_from_captures_or::<i32, Part1Error>(&last_captures, 1, Part1Error::NoFirstDigit)?;
 
     let value = format!("{}{}", first_digit, last_digit).parse().unwrap();
     return Ok(Reading { value });
